@@ -54,7 +54,7 @@ export const createGroupConversation = async (
   return toPlain(conv);
 };
 
-export const deleteConversationById = async (conversationId: string, userId: Types.ObjectId) => {
+export const deleteConversationById = async (conversationId: string |string[], userId: Types.ObjectId) => {
   const conv = await Conversation.findOne({ _id: conversationId, participants: userId });
   if (!conv) throw new Error('NOT_FOUND');
   await Message.deleteMany({ conversationId });

@@ -51,7 +51,7 @@ export const getSentRequests = async (userId: Types.ObjectId) => {
 };
 
 // Accept a request → creates conversation
-export const acceptFriendRequest = async (requestId: string, userId: Types.ObjectId) => {
+export const acceptFriendRequest = async (requestId: string | string[], userId: Types.ObjectId) => {
   const request = await FriendRequest.findOne({ _id: requestId, to: userId, status: 'pending' });
   if (!request) throw new Error('NOT_FOUND');
 
@@ -81,7 +81,7 @@ export const acceptFriendRequest = async (requestId: string, userId: Types.Objec
 };
 
 // Decline a request
-export const declineFriendRequest = async (requestId: string, userId: Types.ObjectId) => {
+export const declineFriendRequest = async (requestId: string | string[], userId: Types.ObjectId) => {
   const request = await FriendRequest.findOne({ _id: requestId, to: userId, status: 'pending' });
   if (!request) throw new Error('NOT_FOUND');
 
@@ -91,17 +91,28 @@ export const declineFriendRequest = async (requestId: string, userId: Types.Obje
 };
 
 // Get users who are already connected (accepted conversation) — for group creation
+type PopulatedUser = {
+  _id: Types.ObjectId;
+  username: string;
+  email: string;
+  isOnline: boolean;
+  lastSeen: Date;
+};
+
 export const getConnectedUsers = async (userId: Types.ObjectId) => {
   const convs = await Conversation.find({
     isGroup: false,
     participants: userId,
-  }).populate('participants', '_id username email isOnline lastSeen');
+  }).populate<{ participants: PopulatedUser[] }>(
+    'participants',
+    '_id username email isOnline lastSeen'
+  );
 
-  // Return the "other" participant from each conversation
   return convs
     .map((c) => {
-      const obj = c.toObject() as { participants: Array<{ _id: string; username: string; email: string; isOnline: boolean }> };
-      return obj.participants.find((p) => p._id.toString() !== userId.toString());
+      return c.participants.find(
+        (p) => p._id.toString() !== userId.toString()
+      );
     })
     .filter(Boolean);
 };

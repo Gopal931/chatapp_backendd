@@ -7,7 +7,7 @@ import {
   getSentRequests, acceptFriendRequest, declineFriendRequest,
   getConnectedUsers,
 } from '../services/friend.service';
-
+import { Types } from 'mongoose';
 // GET /api/friends/search?email=...
 export const searchUser = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
@@ -68,7 +68,7 @@ export const accept = async (req: AuthRequest, res: Response): Promise<void> => 
 
     const io: Server = req.app.get('io');
     if (io) {
-      const fromId = (request.from as { _id: string })._id?.toString() ?? request.from.toString();
+      const fromId = (request.from as { _id: Types.ObjectId })._id?.toString() ?? request.from.toString();
       // Tell the sender their request was accepted + new conversation
       io.to(`user:${fromId}`).emit(SERVER_EVENTS.FRIEND_REQUEST_UPDATED, {
         requestId: request._id,
