@@ -4,8 +4,8 @@ export type RequestStatus = 'pending' | 'accepted' | 'declined';
 
 export interface IFriendRequest extends Document {
   _id: mongoose.Types.ObjectId;
-  from: mongoose.Types.ObjectId;   // who sent the request
-  to:   mongoose.Types.ObjectId;   // who receives the request
+  from: mongoose.Types.ObjectId;  
+  to:   mongoose.Types.ObjectId; 
   status: RequestStatus;
 }
 

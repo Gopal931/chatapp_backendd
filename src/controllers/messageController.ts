@@ -11,9 +11,10 @@ import {
   removeMessage,
 } from '../services/message.service';
 
-// GET /api/messages/:conversationId
+// GET /api/messages/:conversationId    
 export const getMessages = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
+    
     const messages = await getMessagesByConversation(
       req.params.conversationId as string,
       req.user!._id

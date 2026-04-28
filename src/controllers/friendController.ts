@@ -8,6 +8,7 @@ import {
   getConnectedUsers,
 } from '../services/friend.service';
 import { Types } from 'mongoose';
+
 // GET /api/friends/search?email=...
 export const searchUser = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
@@ -29,7 +30,7 @@ export const sendRequest = async (req: AuthRequest, res: Response): Promise<void
 
     const request = await sendFriendRequest(req.user!._id, toId);
 
-    // Notify the receiver via socket in real-time
+    //Notify the receiver via socket in real-time
     const io: Server = req.app.get('io');
     if (io) {
       io.to(`user:${toId}`).emit(SERVER_EVENTS.FRIEND_REQUEST, request);

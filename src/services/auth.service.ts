@@ -19,7 +19,7 @@ const validate = (checks: { condition: boolean; message: string }[]) => {
   }
 };
 
-//-------------  Register  ---------------------
+//-------------  Register  -----------
 export const registerUser = async (body: { username?: string; email?: string; password?: string }) => {
   const { username, email, password } = body;
 
@@ -41,7 +41,7 @@ export const registerUser = async (body: { username?: string; email?: string; pa
 
   const user = await User.create({ username, email, password });
   const token = signToken(user._id.toString());
-
+  
   return { token, user: formatUser(user) };
 };
 
@@ -49,7 +49,7 @@ export const registerUser = async (body: { username?: string; email?: string; pa
 export const loginUser = async (body: { email?: string; password?: string }) => {
   const { email, password } = body;
 
-  // Validate input first
+  //Validate input first
   validate([
     { condition: !email,message: 'Email is required' },
     { condition: !password, message: 'Password is required' },

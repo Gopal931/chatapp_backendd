@@ -27,7 +27,7 @@ export const initSocket = (io: Server): void => {
 
   io.on('connection', async (socket) => {
     const userId = getUserId(socket);
-
+    
     if (userId) {
       onlineUsers.set(userId, socket.id);
       await User.findByIdAndUpdate(userId, { isOnline: true });

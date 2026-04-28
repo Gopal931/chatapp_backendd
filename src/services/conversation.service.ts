@@ -10,6 +10,7 @@ const shapeConversation = (conv: Record<string, unknown>): Record<string, unknow
     const lm = conv.lastMessage as Record<string, unknown>;
     lm.content = lm.text;
   }
+  // console.log(conv);
   return conv;
 };
 
@@ -18,7 +19,10 @@ export const getUserConversations = async (userId: Types.ObjectId) => {
     .populate('participants', '_id username email isOnline lastSeen')
     .populate({ path: 'lastMessage', populate: { path: 'sender', select: '_id username' } })
     .sort({ updatedAt: -1 });
-  return conversations.map((c) => shapeConversation(toPlain(c)));
+   
+  const ress= conversations.map((c) => shapeConversation(toPlain(c)));
+  // console.log(ress);
+  return ress;
 };
 
 export const findOrCreateDirectConversation = async (userId: Types.ObjectId, participantId: string) => {

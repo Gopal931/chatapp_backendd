@@ -17,10 +17,10 @@ export const shapeMessage = (m: Record<string, unknown>): Record<string, unknown
 // ── Presigned PUT URL generate karo — frontend seedha S3 mein upload karega ──
 // 5 minute mein expire hoga
 export const generateUploadUrl = async (
-  fileKey:   string,
-  mimeType:  string,
-  fileSize:  number,
-  userId:    Types.ObjectId
+  fileKey:string,
+  mimeType:string,
+  fileSize:number,
+  userId:Types.ObjectId
 ): Promise<string> => {
   if (!ALLOWED_TYPES.includes(mimeType)) {
     throw new Error(`File type not allowed: ${mimeType}`);
@@ -62,11 +62,11 @@ export const getMessagesByConversation = async (
   if (!conversationId) throw new Error('conversationId is required');
 
   const conv = await Conversation.findOne({ _id: conversationId, participants: userId });
-  if (!conv) throw new Error('FORBIDDEN');
+  if (!conv) throw new Error('FORBIDDEN');   
 
   const messages = await Message.find({ conversationId })
     .populate('sender', '_id username email')
-    .sort({ createdAt: 1 });
+    .sort({ createdAt: 1 });                 
 
   // Har file message ke liye fresh presigned GET URL generate karo
   const shaped = await Promise.all(
@@ -78,7 +78,7 @@ export const getMessagesByConversation = async (
       return plain;
     })
   );
-
+  
   return shaped;
 };
 

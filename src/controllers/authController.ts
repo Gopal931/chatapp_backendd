@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { registerUser, loginUser } from '../services/auth.service';
 
+
 // POST /api/auth/register
 export const register = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -8,10 +9,9 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     res.status(201).json(result);
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Registration failed';
-    // All validation and duplicate errors are 400 Bad Request
     res.status(400).json({ message });
   }
-};
+};  
 
 // POST /api/auth/login
 export const login = async (req: Request, res: Response): Promise<void> => {

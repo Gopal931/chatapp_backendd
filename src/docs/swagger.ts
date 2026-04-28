@@ -9,7 +9,7 @@ import { Express } from 'express';
 import { authDocs } from './routes/auth.docs';
 import { messageDocs, conversationDocs } from './routes/message.docs';
 
-// ── Build the full OpenAPI spec ───────────────────────────────────────────────
+// ── Build the full OpenAPI spec ────
 const swaggerSpec = {
   openapi: '3.0.0',
   info: {
@@ -20,7 +20,7 @@ const swaggerSpec = {
   servers: [
     { url: 'http://localhost:5000', description: 'Local development server' },
   ],
-  // ── Security scheme: Bearer JWT ────────────────────────────────────────────
+  // ── Security scheme: Bearer JWT ───
   components: {
     securitySchemes: {
       bearerAuth: {
@@ -31,7 +31,7 @@ const swaggerSpec = {
       },
     },
   },
-  // ── Combine all route docs ─────────────────────────────────────────────────
+  // ── Combine all route docs ──
   paths: {
     ...authDocs,
     ...messageDocs,
@@ -39,7 +39,7 @@ const swaggerSpec = {
   },
 };
 
-// ── Register Swagger UI on Express ────────────────────────────────────────────
+// ── Register Swagger UI on Express ─
 export const setupSwagger = (app: Express): void => {
   app.use(
     '/api-docs',
